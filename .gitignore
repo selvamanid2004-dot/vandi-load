@@ -1,0 +1,21 @@
+# Node modules
+node_modules/
+
+# Environment configuration
+.env
+.env.local
+.env.production
+
+# SQLite database and temporary storage
+database/vandiload.db-journal
+database/vandiload.db-wal
+database/vandiload.db-shm
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Scratch & test scripts
+scratch/

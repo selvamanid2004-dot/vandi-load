@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Driver Partner Dashboard - Vandi Load</title>
+  <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <link rel="stylesheet" href="/driver/css/driver-theme.css" />
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="driver-header">
+    <div class="driver-container">
+      <div class="driver-nav">
+        <a href="/driver" class="driver-brand">
+          <img src="/assets/images/logo.png" alt="Vandi Load" />
+          <span class="driver-brand-text">VANDI <span>LOAD</span></span>
+          <span class="driver-portal-badge">Driver Portal</span>
+        </a>
+
+        <div class="driver-header-right">
+          <div class="driver-user-chip">
+            <div class="driver-avatar" id="headerAvatar">D</div>
+            <div class="driver-chip-info">
+              <div class="driver-chip-name" id="headerDriverName">Driver Partner</div>
+              <div class="driver-chip-phone" id="headerDriverPhone">+91 ...</div>
+            </div>
+          </div>
+          <button class="btn-logout" onclick="DriverAuth.logout()" title="Logout">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Body -->
+  <main class="driver-container" style="padding-top: 8px; padding-bottom: 50px;">
+    
+    <!-- Driver Profile Banner -->
+    <section class="driver-profile-card">
+      <div class="driver-profile-main">
+        <div class="driver-profile-avatar" id="bannerAvatar">D</div>
+        <div class="driver-profile-details">
+          <h2 id="bannerDriverName">Driver Partner</h2>
+          <div class="driver-tags">
+            <span class="driver-tag highlight" id="bannerStatus">APPROVED DRIVER</span>
+            <span class="driver-tag" id="bannerCity">📍 City</span>
+            <span class="driver-tag" id="bannerVehicle">🚛 Vehicle</span>
+            <span class="driver-tag" id="bannerExp">⭐ Experience</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <button class="btn btn-secondary btn-sm" onclick="DriverApp.openChangePasswordModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Change Password</span>
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="DriverApp.loadProfile(); DriverApp.loadOrders();">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          <span>Refresh Trips</span>
+        </button>
+        <a href="/index.html" target="_blank" class="btn btn-secondary btn-sm">
+          <span>Public Site</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Metrics Bar -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon gold">📦</div>
+        <div>
+          <div class="stat-number" id="statTotalTrips">0</div>
+          <div class="stat-label">Total Assigned Trips</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon blue">⚡</div>
+        <div>
+          <div class="stat-number" id="statAssignedTrips">0</div>
+          <div class="stat-label">New Assigned (Action Needed)</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon purple">🚚</div>
+        <div>
+          <div class="stat-number" id="statActiveTrips">0</div>
+          <div class="stat-label">Accepted / In Transit</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon green">🏁</div>
+        <div>
+          <div class="stat-number" id="statCompletedTrips">0</div>
+          <div class="stat-label">Successfully Delivered</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Header & Filters -->
+    <section class="section-header">
+      <h3 class="section-title">My Assigned Load Trips</h3>
+
+      <!-- Filter Pills -->
+      <div class="filter-pills">
+        <button class="filter-pill active" data-status="all">All Trips</button>
+        <button class="filter-pill" data-status="Assigned">New Assigned</button>
+        <button class="filter-pill" data-status="active">Active & In Transit</button>
+        <button class="filter-pill" data-status="Completed">Completed</button>
+        <button class="filter-pill" data-status="Cancelled">Cancelled</button>
+      </div>
+    </section>
+
+    <!-- Search Bar -->
+    <div style="margin-bottom: 20px; position: relative;">
+      <svg style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--text-muted);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="tripSearchInput" class="form-input" style="padding-left: 42px; background: var(--bg-card);" placeholder="Search trips by customer name, phone, pickup, or destination..." />
+    </div>
+
+    <!-- Trips List Container -->
+    <section class="trips-grid" id="tripsListContainer">
+      <!-- Dynamically populated via DriverApp.loadOrders() -->
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       MODAL: TRIP DETAILS
+       ========================================================================= -->
+  <div class="modal-backdrop" id="tripDetailsModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h4 style="color: #ffffff; font-size: 1.15rem;">Trip Breakdown Details</h4>
+        <button class="modal-close" onclick="DriverApp.closeModal('tripDetailsModal')">✕</button>
+      </div>
+      <div id="tripDetailsModalBody">
+        <!-- Dynamically injected -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: CANCEL TRIP
+       ========================================================================= -->
+  <div class="modal-backdrop" id="cancelTripModal">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h4 style="color: #f87171; font-size: 1.15rem;">Cancel Assigned Trip</h4>
+        <button class="modal-close" onclick="DriverApp.closeModal('cancelTripModal')">✕</button>
+      </div>
+      <form id="cancelTripForm">
+        <input type="hidden" id="cancelOrderId" />
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px;">
+          Please confirm why you are cancelling this assigned trip so the operations coordinator can reassign another vehicle.
+        </p>
+        <div class="form-group">
+          <label class="form-label" for="cancelReasonInput">Reason for Cancellation <span style="color: #f87171;">*</span></label>
+          <textarea id="cancelReasonInput" class="form-textarea" rows="3" placeholder="e.g. Vehicle breakdown / maintenance, unavailable today..." required></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button type="button" class="btn btn-secondary" onclick="DriverApp.closeModal('cancelTripModal')">Keep Trip</button>
+          <button type="submit" class="btn" style="background: #dc2626; color: #fff; border: 1px solid #ef4444;">Confirm Cancellation</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: CHANGE PASSWORD
+       ========================================================================= -->
+  <div class="modal-backdrop" id="driverChangePasswordModal">
+    <div class="modal-box" style="max-width: 440px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 32px; height: 32px; border-radius: 6px; background: rgba(229, 168, 59, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--brand-gold);">🔒</div>
+          <h4 style="color: #ffffff; font-size: 1.15rem; margin: 0;">Change Password</h4>
+        </div>
+        <button class="modal-close" onclick="DriverApp.closeModal('driverChangePasswordModal')">✕</button>
+      </div>
+
+      <div id="driverPassAlert" class="alert-box" style="display: none; margin-bottom: 16px; padding: 12px 14px; border-radius: 8px; font-size: 0.88rem;"></div>
+
+      <form id="driverChangePasswordForm">
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label" for="driverCurrentPass">Current Password <span style="color: #f87171;">*</span></label>
+          <input type="password" id="driverCurrentPass" class="form-input" placeholder="Enter current password (default: driver123)" required />
+        </div>
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label" for="driverNewPass">New Password <span style="color: #f87171;">*</span></label>
+          <input type="password" id="driverNewPass" class="form-input" placeholder="At least 6 characters" minlength="6" required />
+        </div>
+        <div class="form-group" style="margin-bottom: 18px;">
+          <label class="form-label" for="driverConfirmPass">Confirm New Password <span style="color: #f87171;">*</span></label>
+          <input type="password" id="driverConfirmPass" class="form-input" placeholder="Re-enter new password" minlength="6" required />
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="btn btn-secondary" onclick="DriverApp.closeModal('driverChangePasswordModal')">Cancel</button>
+          <button type="submit" id="driverChangePassBtn" class="btn btn-primary">
+            <span>Update Password</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Location Data & Map Helpers -->
+  <script src="/js/india-locations.js"></script>
+  <script src="/js/map-helper.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="/driver/js/driver-auth.js"></script>
+  <script src="/driver/js/driver-api.js"></script>
+  <script src="/driver/js/driver-app.js"></script>
+</body>
+</html>

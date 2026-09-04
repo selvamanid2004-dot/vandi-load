@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Vandi Load</title>
+  <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <link rel="stylesheet" href="/admin/css/admin-theme.css" />
+  <link rel="stylesheet" href="/admin/css/admin-components.css" />
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- =======================================================================
+         SIDEBAR NAVIGATION
+         ======================================================================= -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-header">
+        <img src="/assets/images/logo.png" alt="Vandi Load" class="sidebar-logo" />
+        <div class="sidebar-brand-name">
+          VANDI <span>LOAD</span>
+          <div style="font-size: 0.65rem; color: #a3b899; letter-spacing: 0.12em;">ADMIN PORTAL</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Main</div>
+        <a href="#dashboard" class="admin-nav-item active" data-view="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Dashboard</span>
+        </a>
+
+        <div class="nav-section-title">Fleet & Categories</div>
+        <a href="#vehicles" class="admin-nav-item" data-view="vehicles">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <span>Vehicles</span>
+          <span class="nav-badge" id="navVehiclesCount">8</span>
+        </a>
+        <a href="#categories" class="admin-nav-item" data-view="categories">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Categories</span>
+          <span class="nav-badge" id="navCategoriesCount">4</span>
+        </a>
+        <a href="#gallery" class="admin-nav-item" data-view="gallery">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>Gallery</span>
+        </a>
+
+        <div class="nav-section-title">Operations & Assignments</div>
+        <a href="#enquiries" class="admin-nav-item" data-view="enquiries">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Enquiries</span>
+          <span class="nav-badge" id="navEnquiriesBadge" style="background: rgba(239, 68, 68, 0.2); color: #f87171;">0</span>
+        </a>
+        <a href="#orders" class="admin-nav-item" data-view="orders">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>Orders / Trips</span>
+          <span class="nav-badge" id="navOrdersBadge" style="background: rgba(61, 121, 80, 0.2); color: #4ade80;">0</span>
+        </a>
+        <a href="#drivers" class="admin-nav-item" data-view="drivers">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Drivers</span>
+          <span class="nav-badge" id="navDriversBadge" style="background: rgba(229, 168, 59, 0.2); color: var(--brand-accent-light);">0</span>
+        </a>
+
+        <div class="nav-section-title">Content & Reports</div>
+        <a href="#content" class="admin-nav-item" data-view="content">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <span>Website Content</span>
+        </a>
+        <a href="#reports" class="admin-nav-item" data-view="reports">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span>Reports / PDF Export</span>
+        </a>
+        <a href="#settings" class="admin-nav-item" data-view="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </a>
+
+        <div class="nav-section-title">Links</div>
+        <a href="/driver" target="_blank" class="admin-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          <span>Driver Portal</span>
+        </a>
+        <a href="../index.html" target="_blank" class="admin-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          <span>View Public Site</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="admin-user-profile">
+          <div class="user-avatar" id="adminAvatar">A</div>
+          <div class="user-info">
+            <h5 id="adminFullName">Admin</h5>
+            <p id="adminEmail">admin@vandiload.com</p>
+          </div>
+        </div>
+        <button class="logout-icon-btn" onclick="AdminAuth.logout()" title="Log out">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- =======================================================================
+         MAIN CONTENT VIEWS
+         ======================================================================= -->
+    <main class="admin-main">
+      <!-- Topbar -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-toggle" id="adminSidebarToggle" style="display: none;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <h2 class="admin-page-title" id="pageTitle">Dashboard</h2>
+        </div>
+
+        <div class="topbar-right">
+          <button class="btn btn-secondary btn-sm" onclick="AdminApp.refreshCurrentView()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            <span>Refresh</span>
+          </button>
+          <a href="../index.html" target="_blank" class="btn btn-outline btn-sm">
+            <span>Public Site</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </header>
+
+      <!-- Content Views Container -->
+      <div class="admin-content-body">
+        
+        <!-- 1. DASHBOARD VIEW -->
+        <section id="view-dashboard" class="admin-view active">
+          <!-- Metric Stats Grid -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-card-icon icon-green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              </div>
+              <div class="stat-info">
+                <h3 id="statTotalVehicles">8</h3>
+                <p>Total Vehicles</p>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-icon icon-gold">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div class="stat-info">
+                <h3 id="statTotalCategories">4</h3>
+                <p>Vehicle Categories</p>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-icon icon-blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <div class="stat-info">
+                <h3 id="statNewEnquiries">0</h3>
+                <p>New Enquiries</p>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-card-icon icon-purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </div>
+              <div class="stat-info">
+                <h3 id="statTotalDrivers">0</h3>
+                <p>Total Drivers</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action Bar -->
+          <div class="admin-card" style="margin-bottom: 24px;">
+            <h4 style="color: #ffffff; margin-bottom: 14px; font-size: 1.05rem;">Quick Management Actions</h4>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <button class="btn btn-primary btn-sm" onclick="AdminApp.openVehicleModal()">+ Add New Vehicle</button>
+              <button class="btn btn-secondary btn-sm" onclick="AdminApp.openCategoryModal()">+ Add Category</button>
+              <button class="btn btn-secondary btn-sm" onclick="AdminApp.openGalleryModal()">+ Upload Gallery Photo</button>
+              <button class="btn btn-outline btn-sm" onclick="AdminApp.navigateTo('enquiries')">View Customer Enquiries</button>
+              <button class="btn btn-outline btn-sm" onclick="AdminApp.navigateTo('reports')">Export PDF Reports</button>
+            </div>
+          </div>
+
+          <!-- Recent Enquiries & Drivers Tables -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px;">
+            <div class="admin-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h4 style="color: #ffffff; font-size: 1rem;">Recent Customer Enquiries</h4>
+                <a href="#enquiries" style="color: var(--brand-accent); font-size: 0.85rem; text-decoration: none;">View All →</a>
+              </div>
+              <div class="table-responsive">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Customer</th>
+                      <th>Route / Load</th>
+                      <th>Assigned Driver</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashRecentEnquiries">
+                    <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No enquiries yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="admin-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h4 style="color: #ffffff; font-size: 1rem;">Recent Driver Registrations</h4>
+                <a href="#drivers" style="color: var(--brand-accent); font-size: 0.85rem; text-decoration: none;">View All →</a>
+              </div>
+              <div class="table-responsive">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Driver Name</th>
+                      <th>City</th>
+                      <th>Vehicle</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashRecentDrivers">
+                    <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No drivers registered yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. VEHICLES VIEW -->
+        <section id="view-vehicles" class="admin-view">
+          <div class="admin-card">
+            <div class="filter-bar">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="vehicleSearchInput" placeholder="Search vehicles by name, capacity, or size..." oninput="AdminApp.handleVehicleSearch()" />
+              </div>
+              <div class="filter-group">
+                <select id="vehicleCategoryFilter" class="form-select" onchange="AdminApp.handleVehicleCategoryFilter()">
+                  <option value="all">All Categories</option>
+                </select>
+                <select id="vehicleStatusFilter" class="form-select" onchange="AdminApp.handleVehicleStatusFilter()">
+                  <option value="all">All Status</option>
+                  <option value="active">Active (Public)</option>
+                  <option value="inactive">Inactive (Hidden)</option>
+                </select>
+                <button class="btn btn-secondary btn-sm" onclick="AdminApp.exportVehiclesPDF()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>PDF Export</span>
+                </button>
+                <button class="btn btn-primary btn-sm" onclick="AdminApp.openVehicleModal()">+ Add Vehicle</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Photo</th>
+                    <th>Vehicle Name</th>
+                    <th>Category</th>
+                    <th>Capacity / Size</th>
+                    <th>Display Order</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="vehiclesTableBody">
+                  <tr><td colspan="7" style="text-align: center;">Loading vehicles...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. CATEGORIES VIEW -->
+        <section id="view-categories" class="admin-view">
+          <div class="admin-card">
+            <div class="filter-bar">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="categorySearchInput" placeholder="Search categories..." oninput="AdminApp.handleCategorySearch()" />
+              </div>
+              <div class="filter-group">
+                <button class="btn btn-secondary btn-sm" onclick="AdminApp.exportCategoriesPDF()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>PDF Export</span>
+                </button>
+                <button class="btn btn-primary btn-sm" onclick="AdminApp.openCategoryModal()">+ Add Category</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Category Name</th>
+                    <th>Slug ID</th>
+                    <th>Capacity / Load Info</th>
+                    <th>Order</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="categoriesTableBody">
+                  <tr><td colspan="7" style="text-align: center;">Loading categories...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. GALLERY VIEW -->
+        <section id="view-gallery" class="admin-view">
+          <div class="admin-card">
+            <div class="filter-bar">
+              <div class="filter-group">
+                <select id="galleryCategoryFilter" class="form-select" onchange="AdminApp.handleGalleryFilter()">
+                  <option value="all">All Photo Categories</option>
+                  <option value="pickup">Pickups & Small Trucks</option>
+                  <option value="medium">14 & 17 Feet Trucks</option>
+                  <option value="heavy">20 Feet & Containers</option>
+                  <option value="special">Special / Open Body</option>
+                </select>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="AdminApp.openGalleryModal()">+ Upload Photo</button>
+            </div>
+
+            <div class="admin-gallery-grid" id="adminGalleryGrid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. ENQUIRIES VIEW -->
+        <section id="view-enquiries" class="admin-view">
+          <div class="admin-card">
+            <div class="filter-bar">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="enquirySearchInput" placeholder="Search customer, phone, code, city..." oninput="AdminApp.handleEnquirySearch()" />
+              </div>
+              <div class="filter-group">
+                <select id="enquiryStatusFilter" class="form-select" onchange="AdminApp.handleEnquiryStatusFilter()">
+                  <option value="all">All Enquiries</option>
+                  <option value="new">New</option>
+                  <option value="contacted">Contacted</option>
+                  <option value="closed">Closed</option>
+                </select>
+                <select id="enquiryAssignmentFilter" class="form-select" onchange="AdminApp.handleEnquiryAssignmentFilter()">
+                  <option value="all">All Assignment Status</option>
+                  <option value="Pending">Pending Assignment</option>
+                  <option value="Waiting for Driver Confirmation">Waiting for Driver Confirmation</option>
+                  <option value="Driver Confirmed">Driver Confirmed</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Cancelled">Cancelled</option>
+                  <option value="Cancelled - Driver Did Not Confirm">Cancelled - Driver Did Not Confirm</option>
+                </select>
+                <button class="btn btn-secondary btn-sm" onclick="AdminApp.exportEnquiriesPDF()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>PDF Export</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Req Code</th>
+                    <th>Customer Details</th>
+                    <th>Pickup & Drop</th>
+                    <th>Load Details</th>
+                    <th>Assigned Driver / Person</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="enquiriesTableBody">
+                  <tr><td colspan="7" style="text-align: center;">Loading enquiries...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. ORDERS & ASSIGNMENTS VIEW -->
+        <section id="view-orders" class="admin-view">
+          <div class="admin-card">
+            <div class="filter-bar">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="orderSearchInput" placeholder="Search orders by customer, driver, or code..." oninput="AdminApp.handleOrderSearch()" />
+              </div>
+              <div class="filter-group">
+                <select id="orderAssignmentFilter" class="form-select" onchange="AdminApp.handleOrderFilter()">
+                  <option value="all">All Order Statuses</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Waiting for Driver Confirmation">Waiting for Driver Confirmation</option>
+                  <option value="Driver Confirmed">Driver Confirmed</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Cancelled">Cancelled</option>
+                  <option value="Cancelled - Driver Did Not Confirm">Cancelled - Driver Did Not Confirm</option>
+                </select>
+                <select id="orderDriverFilter" class="form-select" onchange="AdminApp.handleOrderFilter()">
+                  <option value="all">All Drivers</option>
+                </select>
+                <button class="btn btn-secondary btn-sm" onclick="AdminApp.exportOrdersPDF()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>PDF Export</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Order Code</th>
+                    <th>Customer</th>
+                    <th>Route</th>
+                    <th>Assigned Driver</th>
+                    <th>Driver Phone</th>
+                    <th>Trip Status</th>
+                    <th>Date</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                  <tr><td colspan="8" style="text-align: center;">Loading orders...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. DRIVERS VIEW -->
+        <section id="view-drivers" class="admin-view">
+          <div class="admin-card">
+            <div class="filter-bar">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="driverSearchInput" placeholder="Search driver name, phone, city, vehicle number..." oninput="AdminApp.handleDriverSearch()" />
+              </div>
+              <div class="filter-group">
+                <select id="driverStatusFilter" class="form-select" onchange="AdminApp.handleDriverStatusFilter()">
+                  <option value="all">All Drivers</option>
+                  <option value="pending">Pending</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+                <button class="btn btn-secondary btn-sm" onclick="AdminApp.exportDriversPDF()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>PDF Export</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Driver Name</th>
+                    <th>Mobile</th>
+                    <th>Operating City</th>
+                    <th>Vehicle Type & Number</th>
+                    <th>Experience</th>
+                    <th>Assigned Trips</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="driversTableBody">
+                  <tr><td colspan="8" style="text-align: center;">Loading drivers...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. WEBSITE CONTENT VIEW -->
+        <section id="view-content" class="admin-view">
+          <div class="admin-card">
+            <!-- Content Sub-tabs -->
+            <div style="display: flex; gap: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 24px; flex-wrap: wrap;">
+              <button class="btn btn-secondary btn-sm content-tab-btn active" data-tab="hero" onclick="AdminApp.switchContentTab('hero')">Home Hero</button>
+              <button class="btn btn-secondary btn-sm content-tab-btn" data-tab="about" onclick="AdminApp.switchContentTab('about')">About Us & Stats</button>
+              <button class="btn btn-secondary btn-sm content-tab-btn" data-tab="how_it_works" onclick="AdminApp.switchContentTab('how_it_works')">How It Works (5 Steps)</button>
+              <button class="btn btn-secondary btn-sm content-tab-btn" data-tab="why_us" onclick="AdminApp.switchContentTab('why_us')">Why Choose Us (5 Points)</button>
+              <button class="btn btn-secondary btn-sm content-tab-btn" data-tab="footer" onclick="AdminApp.switchContentTab('footer')">CTA & Footer</button>
+            </div>
+
+            <!-- TAB 1: Hero -->
+            <div id="contentTab-hero" class="content-tab-pane active">
+              <form id="heroContentForm" onsubmit="AdminApp.saveHeroContent(event)">
+                <div class="form-group">
+                  <label class="form-label">Hero Badge / Pill Text</label>
+                  <input type="text" id="cHeroBadge" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Main Heading (H1)</label>
+                  <input type="text" id="cHeroHeading" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Lead Subtitle</label>
+                  <textarea id="cHeroLead" class="form-textarea" rows="2"></textarea>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Primary Button Text</label>
+                    <input type="text" id="cHeroBtnPrimary" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Secondary Button Text</label>
+                    <input type="text" id="cHeroBtnSecondary" class="form-input" />
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Hero Section</button>
+              </form>
+            </div>
+
+            <!-- TAB 2: About Us -->
+            <div id="contentTab-about" class="content-tab-pane" style="display: none;">
+              <form id="aboutContentForm" onsubmit="AdminApp.saveAboutContent(event)">
+                <div class="form-group">
+                  <label class="form-label">Section Title</label>
+                  <input type="text" id="cAboutTitle" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Lead Paragraph</label>
+                  <textarea id="cAboutLead" class="form-textarea" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Main Story & Description</label>
+                  <textarea id="cAboutDesc" class="form-textarea" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Highlighted Stat Number (e.g. 5,000+)</label>
+                    <input type="text" id="cAboutStatNum" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Stat Label</label>
+                    <input type="text" id="cAboutStatLabel" class="form-input" />
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Save About Section</button>
+              </form>
+            </div>
+
+            <!-- TAB 3: How It Works -->
+            <div id="contentTab-how_it_works" class="content-tab-pane" style="display: none;">
+              <form id="howItWorksContentForm" onsubmit="AdminApp.saveHowItWorksContent(event)">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Section Title</label>
+                    <input type="text" id="cHowTitle" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Section Subtitle</label>
+                    <input type="text" id="cHowSubtitle" class="form-input" />
+                  </div>
+                </div>
+
+                <div style="margin: 20px 0; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                  <h5 style="color: var(--brand-accent); margin-bottom: 14px;">5 Process Steps:</h5>
+                  <div id="howItWorksStepsContainer"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save How It Works Steps</button>
+              </form>
+            </div>
+
+            <!-- TAB 4: Why Choose Us -->
+            <div id="contentTab-why_us" class="content-tab-pane" style="display: none;">
+              <form id="whyUsContentForm" onsubmit="AdminApp.saveWhyUsContent(event)">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Section Title</label>
+                    <input type="text" id="cWhyTitle" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Section Subtitle</label>
+                    <input type="text" id="cWhySubtitle" class="form-input" />
+                  </div>
+                </div>
+
+                <div style="margin: 20px 0; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                  <h5 style="color: var(--brand-accent); margin-bottom: 14px;">5 Trust Points:</h5>
+                  <div id="whyUsPointsContainer"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Why Choose Us Points</button>
+              </form>
+            </div>
+
+            <!-- TAB 5: Footer & CTA -->
+            <div id="contentTab-footer" class="content-tab-pane" style="display: none;">
+              <form id="footerContentForm" onsubmit="AdminApp.saveFooterContent(event)">
+                <h5 style="color: var(--brand-accent); margin-bottom: 12px;">Bottom Call to Action</h5>
+                <div class="form-group">
+                  <label class="form-label">CTA Banner Heading</label>
+                  <input type="text" id="cCtaTitle" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">CTA Description</label>
+                  <textarea id="cCtaDesc" class="form-textarea" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">CTA Button Label</label>
+                  <input type="text" id="cCtaBtn" class="form-input" />
+                </div>
+
+                <h5 style="color: var(--brand-accent); margin: 24px 0 12px 0;">Footer Text</h5>
+                <div class="form-group">
+                  <label class="form-label">Brand Mission Summary</label>
+                  <textarea id="cFooterDesc" class="form-textarea" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Copyright Line</label>
+                  <input type="text" id="cFooterCopy" class="form-input" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Footer & CTA</button>
+              </form>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- 9. REPORTS & PDF EXPORT VIEW -->
+        <section id="view-reports" class="admin-view">
+          <div class="admin-card">
+            <h3 style="color: #ffffff; margin-bottom: 6px;">Logistics Data Export Center</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">Generate high-quality, formatted PDF summaries with active filter criteria.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+              <!-- Export Card: Enquiries & Orders -->
+              <div class="admin-card" style="background: rgba(13, 19, 31, 0.7); border: 1px solid var(--border-color);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                  <div class="stat-card-icon icon-blue" style="width: 38px; height: 38px; font-size: 1.1rem;">📄</div>
+                  <div>
+                    <h4 style="color: #ffffff; font-size: 1rem;">Customer Enquiries & Orders</h4>
+                    <p style="color: var(--text-muted); font-size: 0.8rem;">Export load requests & trip statuses</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Filter Status</label>
+                  <select id="reportEnquiryStatus" class="form-select">
+                    <option value="all">All Enquiries</option>
+                    <option value="new">New Enquiries</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Assignment Status</label>
+                  <select id="reportEnquiryAssignStatus" class="form-select">
+                    <option value="all">All Assignment Statuses</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Assigned">Assigned</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </div>
+                <button class="btn btn-primary btn-block btn-sm" onclick="AdminApp.exportCustomEnquiriesPDF()">
+                  <span>Download Enquiries PDF</span>
+                </button>
+              </div>
+
+              <!-- Export Card: Drivers -->
+              <div class="admin-card" style="background: rgba(13, 19, 31, 0.7); border: 1px solid var(--border-color);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                  <div class="stat-card-icon icon-purple" style="width: 38px; height: 38px; font-size: 1.1rem;">🚚</div>
+                  <div>
+                    <h4 style="color: #ffffff; font-size: 1rem;">Registered Drivers</h4>
+                    <p style="color: var(--text-muted); font-size: 0.8rem;">Export driver profiles & vehicle numbers</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Driver Status</label>
+                  <select id="reportDriverStatus" class="form-select">
+                    <option value="all">All Drivers</option>
+                    <option value="pending">Pending Drivers</option>
+                    <option value="approved">Approved Drivers</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                </div>
+                <button class="btn btn-primary btn-block btn-sm" style="margin-top: 52px;" onclick="AdminApp.exportCustomDriversPDF()">
+                  <span>Download Drivers PDF</span>
+                </button>
+              </div>
+
+              <!-- Export Card: Vehicles -->
+              <div class="admin-card" style="background: rgba(13, 19, 31, 0.7); border: 1px solid var(--border-color);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                  <div class="stat-card-icon icon-green" style="width: 38px; height: 38px; font-size: 1.1rem;">🚛</div>
+                  <div>
+                    <h4 style="color: #ffffff; font-size: 1rem;">Vehicles Catalog</h4>
+                    <p style="color: var(--text-muted); font-size: 0.8rem;">Export fleet capacity & specifications</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Vehicle Category</label>
+                  <select id="reportVehicleCategory" class="form-select">
+                    <option value="all">All Categories</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Visibility Status</label>
+                  <select id="reportVehicleStatus" class="form-select">
+                    <option value="all">All (Active & Inactive)</option>
+                    <option value="active">Active Only</option>
+                    <option value="inactive">Inactive Only</option>
+                  </select>
+                </div>
+                <button class="btn btn-primary btn-block btn-sm" onclick="AdminApp.exportCustomVehiclesPDF()">
+                  <span>Download Vehicles PDF</span>
+                </button>
+              </div>
+
+              <!-- Export Card: Categories -->
+              <div class="admin-card" style="background: rgba(13, 19, 31, 0.7); border: 1px solid var(--border-color);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                  <div class="stat-card-icon icon-gold" style="width: 38px; height: 38px; font-size: 1.1rem;">🏷️</div>
+                  <div>
+                    <h4 style="color: #ffffff; font-size: 1rem;">Vehicle Categories</h4>
+                    <p style="color: var(--text-muted); font-size: 0.8rem;">Export category structure & load info</p>
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top: 24px;">
+                  <label class="form-label">Category Status</label>
+                  <select id="reportCategoryStatus" class="form-select">
+                    <option value="all">All Categories</option>
+                    <option value="active">Active Categories Only</option>
+                    <option value="inactive">Inactive Categories Only</option>
+                  </select>
+                </div>
+                <button class="btn btn-primary btn-block btn-sm" style="margin-top: 52px;" onclick="AdminApp.exportCustomCategoriesPDF()">
+                  <span>Download Categories PDF</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 10. SETTINGS VIEW -->
+        <section id="view-settings" class="admin-view">
+          <div class="admin-card" style="max-width: 800px;">
+            <form id="siteSettingsForm" onsubmit="AdminApp.saveSettings(event)">
+              <div class="form-group">
+                <label class="form-label">Company Name</label>
+                <input type="text" id="setCompanyName" class="form-input" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Company Tagline</label>
+                <input type="text" id="setTagline" class="form-input" />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Phone Number</label>
+                  <input type="text" id="setPhone" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">WhatsApp Number</label>
+                  <input type="text" id="setWhatsapp" class="form-input" required />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" id="setEmail" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Working Hours</label>
+                  <input type="text" id="setHours" class="form-input" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Main Transport Hub / Office Address</label>
+                <textarea id="setAddress" class="form-textarea" rows="2" required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg" style="margin-top: 16px;">
+                <span>Save Company Settings</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Change Password Card -->
+          <div class="admin-card" style="max-width: 800px; margin-top: 24px;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 14px;">
+              <div class="stat-card-icon icon-gold" style="width: 36px; height: 36px; font-size: 1.1rem;">🔒</div>
+              <div>
+                <h4 style="color: #ffffff; font-size: 1.05rem;">Change Admin Password</h4>
+                <p style="color: var(--text-muted); font-size: 0.82rem;">Update your master account login credentials securely.</p>
+              </div>
+            </div>
+
+            <div id="adminPassAlert" class="alert-box" style="display: none; margin-bottom: 16px; padding: 12px 14px; border-radius: 8px; font-size: 0.88rem;"></div>
+
+            <form id="adminChangePasswordForm" onsubmit="AdminApp.handleChangePassword(event)">
+              <div class="form-group">
+                <label class="form-label" for="adminCurrentPassword">Current Password <span class="req">*</span></label>
+                <input type="password" id="adminCurrentPassword" class="form-input" placeholder="Enter current password" required />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="adminNewPassword">New Password <span class="req">*</span></label>
+                  <input type="password" id="adminNewPassword" class="form-input" placeholder="Min. 6 characters" minlength="6" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adminConfirmPassword">Confirm New Password <span class="req">*</span></label>
+                  <input type="password" id="adminConfirmPassword" class="form-input" placeholder="Re-enter new password" minlength="6" required />
+                </div>
+              </div>
+              <button type="submit" id="adminChangePassBtn" class="btn btn-primary" style="margin-top: 8px;">
+                <span>Update Password</span>
+              </button>
+            </form>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: VEHICLE ADD / EDIT
+       ========================================================================= -->
+  <div class="modal-overlay" id="vehicleModal">
+    <div class="modal-container" style="max-width: 680px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="vehicleModalTitle">Add Vehicle</h3>
+          <p class="modal-subtitle">Fill in the specifications for the customer catalog.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('vehicleModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="vehicleForm">
+          <input type="hidden" id="vFormId" />
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Vehicle Name <span class="req">*</span></label>
+              <input type="text" id="vFormName" class="form-input" placeholder="e.g. 14 Feet Vehicle" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category <span class="req">*</span></label>
+              <select id="vFormCategory" class="form-select" required></select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Weight Capacity <span class="req">*</span></label>
+              <input type="text" id="vFormCapacityKg" class="form-input" placeholder="e.g. 3.5 - 4.0 Tons" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Box Capacity <span class="req">*</span></label>
+              <input type="text" id="vFormCapacityBoxes" class="form-input" placeholder="e.g. Up to 180 Boxes" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Bed Size Dimensions <span class="req">*</span></label>
+              <input type="text" id="vFormBedSize" class="form-input" placeholder="e.g. 14 Feet Closed Body" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Card Badge</label>
+              <input type="text" id="vFormBadge" class="form-input" placeholder="e.g. High Demand" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Best For (One item per line)</label>
+            <textarea id="vFormBestFor" class="form-textarea" rows="3" placeholder="Medium factory goods&#10;100 to 180 standard cartons&#10;2 BHK house moving"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea id="vFormDesc" class="form-textarea" rows="2" placeholder="Brief simple description for customers..."></textarea>
+          </div>
+
+          <!-- Vehicle Image Upload / URL -->
+          <div class="form-group">
+            <label class="form-label">Vehicle Image</label>
+            <div class="form-row" style="align-items: center;">
+              <input type="text" id="vFormImageUrl" class="form-input" placeholder="assets/images/vehicles/14ft-truck.jpg" />
+              <label class="btn btn-secondary btn-sm" style="margin: 0; cursor: pointer;">
+                <span>Upload New Photo</span>
+                <input type="file" id="vFormImageFile" accept="image/*" style="display: none;" onchange="AdminApp.handleVehicleImageUpload(event)" />
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Display Order</label>
+              <input type="number" id="vFormOrder" class="form-input" value="1" min="0" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Status</label>
+              <select id="vFormStatus" class="form-select">
+                <option value="active">Active (Visible on public site)</option>
+                <option value="inactive">Inactive (Hidden)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px;">
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+              <span>Save Vehicle</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: CATEGORY ADD / EDIT
+       ========================================================================= -->
+  <div class="modal-overlay" id="categoryModal">
+    <div class="modal-container" style="max-width: 540px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="categoryModalTitle">Add Vehicle Category</h3>
+          <p class="modal-subtitle">Manage vehicle classification on the website.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('categoryModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="categoryForm" onsubmit="AdminApp.saveCategory(event)">
+          <input type="hidden" id="catFormId" />
+          <div class="form-group">
+            <label class="form-label">Category Name <span class="req">*</span></label>
+            <input type="text" id="catFormName" class="form-input" placeholder="e.g. Heavy Multi-Axle Trucks" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Load Capacity Summary <span class="req">*</span></label>
+            <input type="text" id="catFormCapacity" class="form-input" placeholder="e.g. 7.0 to 15+ Tons / 300-500+ Boxes" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea id="catFormDesc" class="form-textarea" rows="2" placeholder="Summary of what this category is best suited for..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Category Image</label>
+            <div class="form-row" style="align-items: center;">
+              <input type="text" id="catFormImageUrl" class="form-input" placeholder="assets/images/vehicles/small-pickup.jpg" />
+              <label class="btn btn-secondary btn-sm" style="margin: 0; cursor: pointer;">
+                <span>Upload</span>
+                <input type="file" id="catFormImageFile" accept="image/*" style="display: none;" onchange="AdminApp.handleCategoryImageUpload(event)" />
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Display Order</label>
+              <input type="number" id="catFormOrder" class="form-input" value="1" min="0" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Status</label>
+              <select id="catFormStatus" class="form-select">
+                <option value="active">Active (Shown on site)</option>
+                <option value="inactive">Inactive (Hidden)</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 20px;">
+            <span>Save Category</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: ASSIGN DRIVER TO ENQUIRY
+       ========================================================================= -->
+  <div class="modal-overlay" id="assignEnquiryModal">
+    <div class="modal-container" style="max-width: 520px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Assign Driver / Team Member</h3>
+          <p class="modal-subtitle" id="assignEnquirySubtitle">Select driver for this customer request.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('assignEnquiryModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="assignEnquiryForm" onsubmit="AdminApp.saveEnquiryAssignment(event)">
+          <input type="hidden" id="assignEnquiryId" />
+
+          <div id="assignEnquiryLocationBox" style="background: rgba(13, 19, 31, 0.7); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; font-size: 0.82rem;">
+            <div style="font-weight: 600; color: #ffffff;" id="assignEnquiryCustomerName">Customer Details</div>
+            <div id="assignEnquiryPickupAddress" style="color: #cbd5e1; margin-top: 3px;"></div>
+            <div id="assignEnquiryMapBtnContainer" style="margin-top: 6px;"></div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Assign to Registered Driver</label>
+            <select id="assignDriverSelect" class="form-select">
+              <option value="">-- Choose Registered Driver --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Or Assign Team Member / Operator</label>
+            <input type="text" id="assignPersonInput" class="form-input" placeholder="e.g. Operations Coordinator (Rajesh)" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Assignment / Trip Status</label>
+            <select id="assignStatusSelect" class="form-select">
+              <option value="Pending">Pending</option>
+              <option value="Waiting for Driver Confirmation">Waiting for Driver Confirmation</option>
+              <option value="Driver Confirmed">Driver Confirmed</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+              <option value="Cancelled - Driver Did Not Confirm">Cancelled - Driver Did Not Confirm</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Internal Admin Notes</label>
+            <textarea id="assignNotesText" class="form-textarea" rows="2" placeholder="Driver confirmed for 9:00 AM pickup..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 16px;">
+            <span>Confirm Assignment</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: ASSIGN ORDER TO DRIVER (FROM DRIVER VIEW)
+       ========================================================================= -->
+  <div class="modal-overlay" id="driverAssignOrderModal">
+    <div class="modal-container" style="max-width: 560px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="driverAssignTitle">Assign Order to Driver</h3>
+          <p class="modal-subtitle">Choose an available enquiry to assign to this driver.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('driverAssignOrderModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="driverAssignOrderForm" onsubmit="AdminApp.confirmDriverOrderAssignment(event)">
+          <input type="hidden" id="driverAssignDriverId" />
+          <input type="hidden" id="driverAssignDriverName" />
+          <input type="hidden" id="driverAssignDriverPhone" />
+
+          <div class="form-group">
+            <label class="form-label">Select Open Customer Enquiry / Order <span class="req">*</span></label>
+            <select id="driverOpenEnquiriesSelect" class="form-select" required>
+              <option value="">Loading available orders...</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Trip Status</label>
+            <select id="driverAssignTripStatus" class="form-select">
+              <option value="Assigned">Assigned</option>
+              <option value="In Progress">In Progress</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Notes for Driver</label>
+            <textarea id="driverAssignNotes" class="form-textarea" rows="2" placeholder="Pickup point contact details..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 16px;">
+            <span>Assign Trip to Driver</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: DRIVER DETAILS & DOCUMENT VERIFICATION
+       ========================================================================= -->
+  <div class="modal-overlay" id="driverDetailsModal">
+    <div class="modal-container" style="max-width: 700px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="dModalTitle">Driver Profile & Documents</h3>
+          <p class="modal-subtitle" id="dModalSubtitle">Review driver credentials, verification documents, and assigned orders.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('driverDetailsModal')">✕</button>
+      </div>
+      <div class="modal-body" id="driverDetailsModalBody">
+        <!-- Dynamically populated via AdminApp.openDriverDetailsModal() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: EDIT DRIVER
+       ========================================================================= -->
+  <div class="modal-overlay" id="editDriverModal">
+    <div class="modal-container" style="max-width: 650px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="editDriverModalTitle">Edit Driver Profile</h3>
+          <p class="modal-subtitle">Update driver profile and vehicle registration details.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('editDriverModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="editDriverForm" onsubmit="AdminApp.saveEditedDriver(event)">
+          <input type="hidden" id="editDriverId" />
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="editDriverFullName">Full Name <span class="req">*</span></label>
+              <input type="text" id="editDriverFullName" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editDriverPhone">Mobile Number <span class="req">*</span></label>
+              <input type="tel" id="editDriverPhone" class="form-input" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="editDriverEmail">Email Address</label>
+              <input type="email" id="editDriverEmail" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editDriverLocation">Operating City / Area <span class="req">*</span></label>
+              <input type="text" id="editDriverLocation" class="form-input" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="editDriverState">State</label>
+              <select id="editDriverState" class="form-select"></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editDriverDistrict">District</label>
+              <select id="editDriverDistrict" class="form-select">
+                <option value="">Select State First</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editDriverAddress">Address</label>
+            <textarea id="editDriverAddress" class="form-textarea" rows="2" placeholder="Residential / Operating Address"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="editDriverVehicleType">Vehicle Type <span class="req">*</span></label>
+              <select id="editDriverVehicleType" class="form-select" required>
+                <option value="mini-pickup">Mini Pickup</option>
+                <option value="small-pickup">Small Pickup</option>
+                <option value="pickup-truck">Pickup Truck</option>
+                <option value="14-feet">14 Feet Truck</option>
+                <option value="17-feet">17 Feet Truck</option>
+                <option value="20-feet">20 Feet Truck</option>
+                <option value="container">Container Truck</option>
+                <option value="other">Other Commercial Vehicle</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editDriverVehicleNumber">Vehicle Registration Number <span class="req">*</span></label>
+              <input type="text" id="editDriverVehicleNumber" class="form-input" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="editDriverExperience">Experience (Years)</label>
+              <input type="number" id="editDriverExperience" class="form-input" min="0" max="50" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editDriverStatus">Account Status <span class="req">*</span></label>
+              <select id="editDriverStatus" class="form-select" required>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="contacted">Contacted</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editDriverAdminNotes">Admin Notes</label>
+            <textarea id="editDriverAdminNotes" class="form-textarea" rows="2" placeholder="Internal remarks / notes"></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <button type="button" class="btn btn-secondary" onclick="closeModal('editDriverModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="saveDriverBtn">
+              <span>Save Driver Changes</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: GALLERY ADD / EDIT
+       ========================================================================= -->
+  <div class="modal-overlay" id="galleryModal">
+    <div class="modal-container" style="max-width: 540px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Add Gallery Photo</h3>
+          <p class="modal-subtitle">Upload or link a vehicle photo.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('galleryModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="galleryForm">
+          <div class="form-group">
+            <label class="form-label">Photo Title / Caption <span class="req">*</span></label>
+            <input type="text" id="gFormTitle" class="form-input" placeholder="e.g. 14 Feet Truck in Loading Bay" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select id="gFormCategory" class="form-select"></select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Image Source <span class="req">*</span></label>
+            <div class="form-row" style="align-items: center;">
+              <input type="text" id="gFormImageUrl" class="form-input" placeholder="assets/images/vehicles/14ft-truck.jpg" required />
+              <label class="btn btn-secondary btn-sm" style="margin: 0; cursor: pointer;">
+                <span>Upload Photo</span>
+                <input type="file" id="gFormImageFile" accept="image/*" style="display: none;" onchange="AdminApp.handleGalleryImageUpload(event)" />
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Display Order</label>
+            <input type="number" id="gFormOrder" class="form-input" value="1" min="0" />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 20px;">
+            <span>Add to Gallery</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: ADMIN VIEW PICKUP LOCATION MAP
+       ========================================================================= -->
+  <div class="modal-overlay" id="adminMapModal">
+    <div class="modal-container" style="max-width: 650px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">📍 Customer Pickup Location</h3>
+          <p class="modal-subtitle" id="adminMapModalSubtitle">Exact customer map coordinates & address</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('adminMapModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="adminPickupAddressBox" style="background: rgba(13, 19, 31, 0.7); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; font-size: 0.88rem;">
+          <div style="font-weight: 700; color: #ffffff; margin-bottom: 4px;" id="adminMapCustomerName">Customer</div>
+          <div id="adminMapAddressText" style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.4;"></div>
+          <div id="adminMapCoordsText" style="font-size: 0.78rem; color: var(--brand-accent); margin-top: 6px;"></div>
+        </div>
+        <div id="adminMapContainer" style="height: 340px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 14px; background: #0f172a;"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <a id="adminGoogleMapsNavBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="display: inline-flex; align-items: center; gap: 6px;">
+            <span>🗺️ Open in Google Maps</span>
+          </a>
+          <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('adminMapModal')">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- External PDF Generation Libraries (Optional CDN with graceful fallback) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+  <!-- Location Data & Map Helpers -->
+  <script src="/js/india-locations.js"></script>
+  <script src="/js/map-helper.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="/js/modals.js"></script>
+  <script src="/admin/js/admin-auth.js"></script>
+  <script src="/admin/js/admin-api.js"></script>
+  <script src="/admin/js/admin-pdf.js"></script>
+  <script src="/admin/js/admin-app.js"></script>
+</body>
+</html>

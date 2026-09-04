@@ -1,0 +1,68 @@
+/**
+ * Vandi Load - Design System Variables & Tokens
+ * Based on the official brand identity: Dark Slate Obsidian, Olive/Forest Green, and Amber Gold
+ */
+
+:root {
+  /* Brand Primary Colors */
+  --brand-primary: #3d7950;
+  --brand-primary-light: #4e9b67;
+  --brand-primary-dark: #2a5337;
+  --brand-primary-glow: rgba(61, 121, 80, 0.35);
+
+  /* Brand Secondary & Accent Colors (Gold / Amber from Logo) */
+  --brand-accent: #e5a83b;
+  --brand-accent-light: #f5bc56;
+  --brand-accent-dark: #c68923;
+  --brand-accent-glow: rgba(229, 168, 59, 0.35);
+
+  /* Deep Dark Neutral Palette */
+  --bg-main: #0a0e17;
+  --bg-surface: #111726;
+  --bg-surface-elevated: #182236;
+  --bg-surface-card: rgba(24, 34, 54, 0.75);
+  --bg-surface-glass: rgba(18, 27, 44, 0.85);
+
+  /* Clean Light Accents & Cards */
+  --bg-light-soft: #f8fafc;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.15);
+  --border-focus: #4e9b67;
+  --border-accent: rgba(229, 168, 59, 0.4);
+
+  /* Text & Typography Colors */
+  --text-white: #ffffff;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-accent: #f5bc56;
+  --text-success: #34d399;
+
+  /* Typography Fonts */
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Layout & Spacing */
+  --container-max: 1240px;
+  --container-padding: 24px;
+  --nav-height: 80px;
+
+  /* Border Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows & Glassmorphic Elevation */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --shadow-glow-green: 0 0 25px rgba(61, 121, 80, 0.4);
+  --shadow-glow-gold: 0 0 25px rgba(229, 168, 59, 0.35);
+
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
